@@ -1,4 +1,4 @@
-const selectBtn = document.getElementById("choose");
+
 const battleSearch = document.getElementById("battle-search")
 const pokemonInventory = document.getElementById("pokemon-inventory")
 const pokemonOne = document.getElementById("pokemon-1")
@@ -8,66 +8,37 @@ const optionOneBtn = document.getElementById("optionOne")
 const optionTwoBtn = document.getElementById("optionTwo")
 
 
-let currentPokemon = []
 let items = [{itemName: "potion", Quantity: 1}]
 
-let choice = {
-    name: "",
-    att: 0,
-    hp: 0,
-    def: 0,
-    spcAtt:0,
-    spcDef:0,
-    speed:0,
 
-    
+
+
+async function getCurrentDialogue() {
+    const url = 'http://localhost:3000/players/1/dialogue'
+    try {
+        const response = await fetch(url)
+        if (!response.ok) {
+            throw new Error(`response.status: ${response.status}`)
+        }
+
+         const result = await response.json();
+        console.log(result)
+        return result 
+        } catch(err) {
+            console.error(err.message)
+        }
+}
+
+async function renderDialogue() {
+    const currentDialogue =  await getCurrentDialogue();
+
+   dialogue.textContent = currentDialogue.text
+
+
+
 }
 
 
-function getCurrentDialogue() {
-    return options[currentDialogueId]
-}
-
-function renderDialogue() {
-    const currentDialogue = getCurrentDialogue();
-
-       dialogue.textContent = currentDialogue.question
-     optionOneBtn.textContent = currentDialogue.options[0].optionOne
-     optionTwoBtn.textContent = currentDialogue.options[1].optionTwo
-
-     if ("rewards" in currentDialogue) {
-        
-           
-    
-       for (const reward of currentDialogue.rewards) {
-
-             let found = false
-
-          for (item of items){
-            if (reward.itemName === item.itemName) {
-                item.Quantity += reward.Quantity
-                found = true
-                break
-
-            }  
-          }
-
-          if(!found) {
-
-            items.push(reward)
-          }
-
-       }
-        console.log(items)
-     }
-
-}
-
-function startGame() {
-
-    renderDialogue()
-
-}
 
 let currentDialogueId = 0;
 
@@ -103,51 +74,17 @@ let options = [
 
 
 
-const myKeys = Object.keys(choice)
-
-let statsArray = []
-
-selectBtn.addEventListener("click" , function() {
 
 
-    console.log("choose")
 
 
-    statsArray = Array.from(battleStats.children, element => element.textContent)
-    console.log(statsArray)
-    
-    choice.name = battleName.textContent
-    choice.att = parseInt(statsArray[0])
-    choice.hp = parseInt(statsArray[1])
-    choice.def = parseInt(statsArray[2])
-    choice.spcAtt = parseInt(statsArray[3])
-    choice.spcDef = parseInt(statsArray[4])
-    choice.speed = parseInt(statsArray[5])
-    battleChoiceContainer.style.display = "none"
-    battleSearch.style.display = "none"
-
-    console.log(choice)
-
-    currentPokemon.push(choice)
-    console.log(currentPokemon[0].name)
-    
-    pokemonOne.src = battleImg.src
-    bottomUi.style.display = "flex"
-     
-   
-    startGame()
-
-      
-})
 
 
 
 
 optionOneBtn.addEventListener("click", function() {
 
- const current = getCurrentDialogue();
- const currentOption = current.options[0]
- currentDialogueId = currentOption.nextId
+
  renderDialogue()
 
 }

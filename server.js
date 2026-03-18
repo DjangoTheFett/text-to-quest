@@ -1,13 +1,14 @@
 const pool = require("./db.js");
 const express = require("express")
 require("dotenv").config();
+const cors = require("cors")
 
 
 
 const app = express();
 
 const PORT = 3000;
-
+app.use(cors())
 app.use(express.json());
 
 
@@ -32,6 +33,31 @@ app.get("/inventory/:playerId", async (req,res) => {
 });
 
 
+
+app.get("/players/:playerId/dialogue" , async (req,res) => {
+const playerId = req.params.playerId
+
+
+try {
+const result = await pool.query(`SELECT dialogue_nodes.*
+    FROM players
+    JOIN dialogue_nodes
+    On players.current_dialogue_id = dialogue_nodes.id
+    WHERE players.id = $1`, [playerId])
+
+    if (result.rows.length === 0){
+       return res.status(404).json({error:"no date found"
+        })
+    } 
+
+    res.json(result.rows[0]) 
+
+} catch (err) {
+    return res.status(505).json({error: "Server error"})
+
+}
+
+})
 
 
 app.listen(PORT, () => {
