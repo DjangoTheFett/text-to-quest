@@ -6,10 +6,11 @@ const bottomUi = document.getElementById("bottom-ui")
 const dialogue = document.getElementById("dialogue")
 const optionOneBtn = document.getElementById("optionOne")
 const optionTwoBtn = document.getElementById("optionTwo")
+const startBtn = document.getElementById("start-btn")
+const dialogueBox = document.getElementById("dialogue-box")
 
 
 let items = [{itemName: "potion", Quantity: 1}]
-
 
 
 
@@ -32,7 +33,9 @@ async function getCurrentDialogue() {
 async function renderDialogue() {
     const currentDialogue =  await getCurrentDialogue();
 
-   dialogue.textContent = currentDialogue.text
+   dialogue.textContent = currentDialogue.dialogue
+    optionOneBtn.textContent = currentDialogue.options[0].option
+    optionTwoBtn.textContent = currentDialogue.options[1].option
 
 
 
@@ -78,12 +81,17 @@ let options = [
 
 
 
-
+startBtn.addEventListener("click" , () => {
+    dialogueBox.style.display = 'flex'
+    renderDialogue()
+    startBtn.style.display = "none"
+})
 
 
 
 optionOneBtn.addEventListener("click", function() {
-
+ 
+    
 
  renderDialogue()
 
