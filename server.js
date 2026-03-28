@@ -68,6 +68,28 @@ const result = await pool.query(`SELECT dialogue_nodes.*, dialogue_options.text 
 })
 
 
+app.patch("/players/:playerId/dialogue", async (req, res) => {
+const playerId = req.params.playerId
+const dialogueId = req.body.current_dialogue_id
+console.log("PATCH hit", req.params, req.body)
+
+try {
+
+const result = await pool.query(`UPDATE players
+    SET current_dialogue_id = $2
+    WHERE players.id = $1`, [playerId,dialogueId])
+
+res.json({update: "success"})
+
+} catch (err) {
+    return res.status(505).json({error: "Server error"})
+}
+
+
+}) 
+
+
+
 app.listen(PORT, () => {
 console.log(`server running on port ${PORT}`)
 

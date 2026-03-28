@@ -46,8 +46,18 @@ async function renderDialogue() {
 
 
 
-let currentDialogueId = 0;
+async function patchDialogue(nextId) {
+    const url = 'http://localhost:3000/players/1/dialogue'
 
+        try {
+        await fetch(url, {method:'PATCH', headers:{'Content-Type': 'application/json'}, body: JSON.stringify({current_dialogue_id:nextId})})
+        renderDialogue()
+
+
+        } catch(err) {
+            console.log(err.message)
+        }
+}
 
 
 
@@ -66,14 +76,18 @@ startBtn.addEventListener("click" , () => {
 
 
 optionOneBtn.addEventListener("click", function() {
- 
+ patchDialogue(nextOptions.optionOneNextId)
     
 
- renderDialogue()
+ 
 
 }
 )
 
+optionTwoBtn.addEventListener("click", function() {
+
+    patchDialogue(nextOptions.optionTwoNextId)
+})
 
 
 
