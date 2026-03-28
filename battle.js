@@ -10,7 +10,7 @@ const startBtn = document.getElementById("start-btn")
 const dialogueBox = document.getElementById("dialogue-box")
 
 
-let items = [{itemName: "potion", Quantity: 1}]
+let nextOptions = {optionOne:"", optionOneNextId:"", optionTwo:"",optionTwoNextId:""}
 
 
 
@@ -36,43 +36,19 @@ async function renderDialogue() {
    dialogue.textContent = currentDialogue.dialogue
     optionOneBtn.textContent = currentDialogue.options[0].option
     optionTwoBtn.textContent = currentDialogue.options[1].option
+    nextOptions.optionOne = currentDialogue.options[0].option
+    nextOptions.optionOneNextId = currentDialogue.options[0].nextId
+     nextOptions.optionTwo = currentDialogue.options[1].option
+    nextOptions.optionTwoNextId = currentDialogue.options[1].nextId
 
-
-
+   
 }
 
 
 
 let currentDialogueId = 0;
 
-let options = [ 
-    
-{
-    questionId: 0, 
-    question: "you find yourself at the path to leave your hometown, you could visit with someone before leaving or if your ready you can set off on your journey, what will you do?",
-    options: [  {optionOne: "visit mom", nextId:1},
-    {optionTwo: "leave town and start your journey", nextId:2}]
-    
-  
-}, {
 
-    questionId: 1, 
-    question: " you walk in and your mother greets you. 'hello son , I prepared you a couple of things. here take  them' ",
-    options: [  {optionOne: "leave on your journey", nextId:3},
-    {optionTwo: "visit your room", nextId:4}],
-    rewards: [{itemName: "potion", Quantity: 1}, {itemName:"hyper-potion", Quantity:1}]
-
-
-
-},
-{
-
-
-}
-
-
-
-]
 
 
 
