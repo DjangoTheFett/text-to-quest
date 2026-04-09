@@ -12,10 +12,11 @@ const dialogueBox = document.getElementById("dialogue-box")
 
 let nextOptions = {optionOne:"", optionOneNextId:"", optionTwo:"",optionTwoNextId:""}
 
+let currentPlayerId = 1;
 
 
 async function getCurrentDialogue() {
-    const url = 'http://localhost:3000/players/1/dialogue'
+    const url = `http://localhost:3000/players/${currentPlayerId}/dialogue`
     try {
         const response = await fetch(url)
         if (!response.ok) {
@@ -47,7 +48,7 @@ async function renderDialogue() {
 
 
 async function patchDialogue(nextId) {
-    const url = 'http://localhost:3000/players/1/dialogue'
+    const url = `http://localhost:3000/players/${currentPlayerId}/dialogue`
 
         try {
         await fetch(url, {method:'PATCH', headers:{'Content-Type': 'application/json'}, body: JSON.stringify({current_dialogue_id:nextId})})
@@ -61,13 +62,29 @@ async function patchDialogue(nextId) {
 
 
 
+async function newPlayer() {
+    const url = 'http://localhost:3000/players'
 
+    try  { const response = await fetch(url, {method:'POST'}) 
+        
+        const result = await response.json();
+
+             currentPlayerId = result.id
+
+
+    } catch(err) {
+        console.log(err.message)
+    }
+    
+    
+}
 
 
 
 
 
 startBtn.addEventListener("click" , () => {
+    newPlayer()
     dialogueBox.style.display = 'flex'
     renderDialogue()
     startBtn.style.display = "none"

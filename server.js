@@ -88,6 +88,12 @@ res.json({update: "success"})
 
 }) 
 
+app.post("/players", async (req,res) => {
+const result = await pool.query(`INSERT INTO players DEFAULT VALUES RETURNING id`)
+res.json(result.rows[0])
+
+})
+
 
 
 app.listen(PORT, () => {
